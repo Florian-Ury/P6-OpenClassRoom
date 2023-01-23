@@ -74,7 +74,7 @@ const {findIndex} = require("rxjs");
           if (like === 1) {
           let addingLike = 0
             if (sauce.likes == null){
-                addingLike = 1
+              addingLike = 1
             } else {
               addingLike = parseInt(sauce.likes)+1
             }
@@ -93,18 +93,18 @@ const {findIndex} = require("rxjs");
               .catch(error => {res.status(401).json({error})})
           } else if (like === 0) {
               let calcul = 0
-              const usersLiked = sauce.usersLiked.includes(req.body.userId)
-              const usersDisliked = sauce.usersDisliked.includes(req.body.userId)
+              const usersLiked = sauce.usersLiked.includes(req.body.userId);
+              const usersDisliked = sauce.usersDisliked.includes(req.body.userId);
               if (usersLiked === true) {
-                calcul = parseInt(sauce.likes)-1
-                Sauces.updateOne({ _id : req.params.id}, {likes: calcul, _id: req.params.id, $pull: { usersLiked : req.body.userId}})
-                  .then(() => res.status(200).json({message : "like mis à jour"}))
-                  .catch(error => {res.status(401).json({error})})
+                  calcul = parseInt(sauce.likes)-1
+                  Sauces.updateOne({ _id : req.params.id}, {likes: calcul, _id: req.params.id, $pull: { usersLiked : req.body.userId}})
+                    .then(() => res.status(200).json({message : "like mis à jour"}))
+                    .catch(error => {res.status(401).json({error})})
               } else if (usersDisliked === true) {
-                calcul = parseInt(sauce.dislikes)-1
-                Sauces.updateOne({ _id : req.params.id}, {dislikes: calcul, _id: req.params.id, $pull: { usersDisliked : req.body.userId}})
-                  .then(() => res.status(200).json({message : "like mis à jour"}))
-                  .catch(error => {res.status(401).json({error})})
+                  calcul = parseInt(sauce.dislikes)-1
+                  Sauces.updateOne({ _id : req.params.id}, {dislikes: calcul, _id: req.params.id, $pull: { usersDisliked : req.body.userId}})
+                    .then(() => res.status(200).json({message : "like mis à jour"}))
+                    .catch(error => {res.status(401).json({error})})
               }
             }
       })
