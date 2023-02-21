@@ -1,8 +1,8 @@
 const passwordValidator = require('password-validator');
 
 
-const passwordSchema = new passwordValidator()
-  .is().min(8)
+const passwordMiddle = new passwordValidator()
+  .is().min(5)
   .is().max(100)
   .has().uppercase()
   .has().lowercase()
@@ -10,5 +10,5 @@ const passwordSchema = new passwordValidator()
   .has().not().spaces()
   .is().not().oneOf(['Passw0rd', 'Password123']);
 
-module.exports = passwordSchema
+module.exports = passwordMiddle
 

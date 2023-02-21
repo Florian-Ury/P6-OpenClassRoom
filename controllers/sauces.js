@@ -25,7 +25,7 @@ const {findIndex} = require("rxjs");
     Sauces.findOne({_id: req.params.id})
       .then(sauce => {
         if (sauce.userId != req.auth.userId) {
-          res.status(401).json({message : "Non autorisé"})
+          res.status(401).json({error : "401"})
         } else {
           Sauces.updateOne({ _id : req.params.id}, {...sauceObject, _id: req.params.id})
             .then(() => res.status(200).json({message : "Sauces mis à jour"}))
@@ -39,7 +39,7 @@ const {findIndex} = require("rxjs");
     Sauces.findOne({ _id : req.params.id})
       .then(sauce => {
         if (sauce.userId != req.auth.userId) {
-          res.status(401).json({message : 'Non-autorisé'});
+          res.status(401).json({error : "401"});
         } else {
           const filename = sauce.imageUrl.split('/images/')[1];
           fs.unlink(`images/${filename}`, () => {
@@ -89,7 +89,7 @@ const {findIndex} = require("rxjs");
               addingDislikes = parseInt(sauce.dislikes)+1
             }
             Sauces.updateOne({ _id : req.params.id}, {dislikes: addingDislikes, _id: req.params.id, $push: { usersDisliked : req.body.userId}})
-              .then(() => res.status(200).json({message : "like mis à jour"}))
+              .then(() => res.status(200).json({message : "dislike mis à jour"}))
               .catch(error => {res.status(401).json({error})})
           } else if (like === 0) {
               let calcul = 0
@@ -103,7 +103,7 @@ const {findIndex} = require("rxjs");
               } else if (usersDisliked === true) {
                   calcul = parseInt(sauce.dislikes)-1
                   Sauces.updateOne({ _id : req.params.id}, {dislikes: calcul, _id: req.params.id, $pull: { usersDisliked : req.body.userId}})
-                    .then(() => res.status(200).json({message : "like mis à jour"}))
+                    .then(() => res.status(200).json({message : "dislike mis à jour"}))
                     .catch(error => {res.status(401).json({error})})
               }
             }
