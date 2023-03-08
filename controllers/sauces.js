@@ -1,9 +1,8 @@
 const Sauces = require('../models/Sauces');
 const fs = require("fs");
-const {findIndex} = require("rxjs");
 
 
-  exports.createSauce = (req, res, next) => {
+  exports.createSauce = (req, res) => {
     const sauceObject = JSON.parse(req.body.sauce);
     const sauce = new Sauces({
       ...sauceObject,
@@ -15,7 +14,8 @@ const {findIndex} = require("rxjs");
       .catch(error => res.status(400).json({error}))
   };
 
-  exports.modifySauce = (req, res, next) => {
+
+  exports.modifySauce = (req, res) => {
     const sauceObject = req.file ? {
       ...JSON.parse(req.body.sauce),
       imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
@@ -24,7 +24,7 @@ const {findIndex} = require("rxjs");
     delete sauceObject._userId;
     Sauces.findOne({_id: req.params.id})
       .then(sauce => {
-        if (sauce.userId != req.auth.userId) {
+        if (sauce.userId !== req.auth.userId) {
           res.status(401).json({error : "401"})
         } else {
           Sauces.updateOne({ _id : req.params.id}, {...sauceObject, _id: req.params.id})
@@ -35,10 +35,10 @@ const {findIndex} = require("rxjs");
       .catch(error => { res.status(400).json({error})})
   };
 
-  exports.deleteSauce = (req, res, next)=> {
+  exports.deleteSauce = (req, res)=> {
     Sauces.findOne({ _id : req.params.id})
       .then(sauce => {
-        if (sauce.userId != req.auth.userId) {
+        if (sauce.userId !== req.auth.userId) {
           res.status(401).json({error : "401"});
         } else {
           const filename = sauce.imageUrl.split('/images/')[1];
@@ -54,20 +54,20 @@ const {findIndex} = require("rxjs");
       })
   };
 
-  exports.getOneSauce = (req, res, next) => {
+  exports.getOneSauce = (req, res) => {
     Sauces.findOne({ _id : req.params.id })
       .then( sauce => res.status(200).json(sauce))
       .catch(error => res.status(404).json({error}));
   };
 
-  exports.getAllSauce = (req, res, next) => {
+  exports.getAllSauce = (req, res) => {
     Sauces.find()
       .then( sauce => res.status(200).json(sauce))
       .catch( error => res.status(400).json(error));
 
   };
 
-  exports.getLike = (req, res, next) => {
+  exports.getLike = (req, res) => {
     Sauces.findOne({ _id : req.params.id })
       .then( sauce => {
         let like = req.body.like

@@ -2,10 +2,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const rateLimit = require('express-rate-limit');
 const helmet = require("helmet");
+
 require('dotenv').config();
 
 const userRoutes = require('./routes/user');
 const sauceRoutes = require('./routes/sauce');
+
 const path = require("path");
 
 mongoose.set('strictQuery', true);

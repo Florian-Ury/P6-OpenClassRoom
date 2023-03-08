@@ -2,11 +2,10 @@ const bcrypt = require('bcrypt');
 const User = require('../models/Users');
 const jwt = require('jsonwebtoken');
 const pwd = require('../middleware/password-validate');
-const {catchError} = require("rxjs");
 require('dotenv').config();
 
 
-exports.signup = (req, res, next) => {
+exports.signup = (req, res) => {
   if (pwd.validate(req.body.password)) {
       bcrypt.hash(req.body.password, 10)
         .then(hash => {
@@ -24,7 +23,7 @@ exports.signup = (req, res, next) => {
   }
 };
 
-exports.login = (req, res, next) => {
+exports.login = (req, res) => {
   User.findOne({email : req.body.email})
     .then( user => {
       if (user === null) {
